@@ -22,7 +22,7 @@ export function LeadStats({ leads }: LeadStatsProps) {
     {} as Record<string, number>,
   )
 
-  const topSource = Object.entries(leadSources).sort(([, a], [, b]) => b - a)[0]
+  const topSource = Object.entries(leadSources).sort(([, a], [, b]) => (b as number) - (a as number))[0]
 
   const stats = [
     {

@@ -20,7 +20,7 @@ export function ClientsOverview({ clients }: ClientsOverviewProps) {
 
   const chartData = Object.entries(statusCounts).map(([status, count]) => ({
     name: status.charAt(0).toUpperCase() + status.slice(1),
-    value: count,
+    value: count as number,
   }))
 
   const COLORS = ["#3b82f6", "#10b981", "#f59e0b", "#ef4444"]

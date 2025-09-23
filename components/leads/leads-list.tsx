@@ -129,7 +129,7 @@ export function LeadsList({ leads, packages }: LeadsListProps) {
                   <SelectItem value="all">All Sources</SelectItem>
                   {uniqueSources.map((source) => (
                     <SelectItem key={source} value={source}>
-                      {source.replace("_", " ").replace(/\b\w/g, (l) => l.toUpperCase())}
+                      {source.replace("_", " ").replace(/\b\w/g, (l: string) => l.toUpperCase())}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -198,7 +198,7 @@ export function LeadsList({ leads, packages }: LeadsListProps) {
                         <div className="flex items-center space-x-2">
                           <span className="text-sm font-medium text-gray-600">Source:</span>
                           <Badge className={getSourceColor(lead.source)} variant="outline">
-                            {lead.source.replace("_", " ").replace(/\b\w/g, (l) => l.toUpperCase())}
+                            {lead.source.replace("_", " ").replace(/\b\w/g, (l: string) => l.toUpperCase())}
                           </Badge>
                         </div>
                       )}
