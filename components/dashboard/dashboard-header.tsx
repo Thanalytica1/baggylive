@@ -13,6 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { ThemeToggle } from "@/components/ui/theme-toggle"
 
 interface DashboardHeaderProps {
   profile: any
@@ -40,7 +41,7 @@ export function DashboardHeader({ profile }: DashboardHeaderProps) {
   ]
 
   return (
-    <header className="bg-white border-b border-gray-200">
+    <header className="bg-background border-b border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
@@ -55,20 +56,21 @@ export function DashboardHeader({ profile }: DashboardHeaderProps) {
                 key={item.href}
                 asChild
                 variant="ghost"
-                className={pathname === item.href ? "text-blue-600 bg-blue-50" : "text-gray-700 hover:text-gray-900"}
+                className={pathname === item.href ? "text-primary bg-accent" : "text-muted-foreground hover:text-foreground"}
               >
                 <Link href={item.href}>{item.label}</Link>
               </Button>
             ))}
           </nav>
 
-          <div className="flex items-center">
+          <div className="flex items-center space-x-4">
+            <ThemeToggle />
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                   <Avatar className="h-8 w-8">
                     <AvatarImage src={profile?.profile_image_url || "/placeholder.svg"} alt={profile?.first_name} />
-                    <AvatarFallback className="bg-blue-600 text-white text-sm">{initials}</AvatarFallback>
+                    <AvatarFallback className="bg-primary text-primary-foreground text-sm">{initials}</AvatarFallback>
                   </Avatar>
                 </Button>
               </DropdownMenuTrigger>

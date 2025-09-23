@@ -1,40 +1,42 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Logo } from "@/components/ui/logo"
+import { LandingHeader } from "@/components/ui/landing-header"
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-      <div className="container mx-auto px-4 py-16">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-slate-900 dark:to-slate-800 relative">
+      <LandingHeader />
+      <div className="container mx-auto px-4 py-16 pt-24">
         <div className="text-center max-w-4xl mx-auto">
           <div className="mb-8">
             <div className="flex justify-center mb-6">
               <Logo size="3xl" />
             </div>
-            <h1 className="text-5xl font-bold text-gray-900 mb-6">
-              Welcome to <span className="text-blue-600">GymBag</span>
+            <h1 className="text-5xl font-bold text-foreground mb-6">
+              Welcome to <span className="text-primary">GymBag</span>
             </h1>
-            <h1 className="text-5xl font-bold text-gray-900 mb-6">
+            <h1 className="text-5xl font-bold text-foreground mb-6">
               Run Your Coaching Business Without Spreadsheets
             </h1>
-            <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+            <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
               GymBag is your all-in-one cockpit to manage clients, sessions, packages, and growth — built for independent trainers and wellness professionals.
             </p>
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-            <Button asChild size="lg" className="h-12 px-8 bg-blue-600 hover:bg-blue-700">
+            <Button asChild size="lg" className="h-12 px-8">
               <Link href="/auth/signup">Get Started Free</Link>
             </Button>
-            <Button asChild variant="outline" size="lg" className="h-12 px-8 bg-transparent">
+            <Button asChild variant="outline" size="lg" className="h-12 px-8">
               <Link href="/auth/login">Sign In</Link>
             </Button>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8 mt-16">
             <div className="text-center p-6">
-              <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mx-auto mb-4">
-                <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-12 h-12 bg-accent rounded-xl flex items-center justify-center mx-auto mb-4">
+                <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -43,13 +45,13 @@ export default function HomePage() {
                   />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Sessions & Scheduling</h3>
-              <p className="text-gray-600">Create, complete, and track sessions in seconds—whether in-person or online.</p>
+              <h3 className="text-lg font-semibold text-foreground mb-2">Sessions & Scheduling</h3>
+              <p className="text-muted-foreground">Create, complete, and track sessions in seconds—whether in-person or online.</p>
             </div>
 
             <div className="text-center p-6">
-              <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mx-auto mb-4">
-                <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-12 h-12 bg-accent rounded-xl flex items-center justify-center mx-auto mb-4">
+                <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -58,13 +60,13 @@ export default function HomePage() {
                   />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Client Profiles & Notes</h3>
-              <p className="text-gray-600">Keep detailed notes, history, and milestones so you remember the little things that build long-term relationships.</p>
+              <h3 className="text-lg font-semibold text-foreground mb-2">Client Profiles & Notes</h3>
+              <p className="text-muted-foreground">Keep detailed notes, history, and milestones so you remember the little things that build long-term relationships.</p>
             </div>
 
             <div className="text-center p-6">
-              <div className="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center mx-auto mb-4">
-                <svg className="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-12 h-12 bg-accent rounded-xl flex items-center justify-center mx-auto mb-4">
+                <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -73,13 +75,13 @@ export default function HomePage() {
                   />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Smart Reminders & Follow-ups</h3>
-              <p className="text-gray-600">Automate renewals, check-ins, and client milestones so you never miss an important moment.</p>
+              <h3 className="text-lg font-semibold text-foreground mb-2">Smart Reminders & Follow-ups</h3>
+              <p className="text-muted-foreground">Automate renewals, check-ins, and client milestones so you never miss an important moment.</p>
             </div>
 
             <div className="text-center p-6">
-              <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center mx-auto mb-4">
-                <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-12 h-12 bg-accent rounded-xl flex items-center justify-center mx-auto mb-4">
+                <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -88,13 +90,13 @@ export default function HomePage() {
                   />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Packages & Payments</h3>
-              <p className="text-gray-600">Track session packs and log revenue manually. Keep your finances organized without complex software.</p>
+              <h3 className="text-lg font-semibold text-foreground mb-2">Packages & Payments</h3>
+              <p className="text-muted-foreground">Track session packs and log revenue manually. Keep your finances organized without complex software.</p>
             </div>
 
             <div className="text-center p-6">
-              <div className="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center mx-auto mb-4">
-                <svg className="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-12 h-12 bg-accent rounded-xl flex items-center justify-center mx-auto mb-4">
+                <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -103,13 +105,13 @@ export default function HomePage() {
                   />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Dashboard & Growth Tools</h3>
-              <p className="text-gray-600">See sessions this week, revenue this month, and who needs follow-up. Plan posts and manage leads in one place.</p>
+              <h3 className="text-lg font-semibold text-foreground mb-2">Dashboard & Growth Tools</h3>
+              <p className="text-muted-foreground">See sessions this week, revenue this month, and who needs follow-up. Plan posts and manage leads in one place.</p>
             </div>
 
             <div className="text-center p-6">
-              <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mx-auto mb-4">
-                <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-12 h-12 bg-accent rounded-xl flex items-center justify-center mx-auto mb-4">
+                <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -118,8 +120,8 @@ export default function HomePage() {
                   />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Built for Every Professional</h3>
-              <p className="text-gray-600">Mobile-first and adaptable for trainers, yoga, Pilates, nutrition, and wellness pros—run your business anywhere.</p>
+              <h3 className="text-lg font-semibold text-foreground mb-2">Built for Every Professional</h3>
+              <p className="text-muted-foreground">Mobile-first and adaptable for trainers, yoga, Pilates, nutrition, and wellness pros—run your business anywhere.</p>
             </div>
           </div>
         </div>

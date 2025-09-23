@@ -20,7 +20,7 @@ export function StatsCards({ totalClients, totalRevenue, thisMonthSessions, acti
       title: "Total Clients",
       value: totalClients.toString(),
       icon: (
-        <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -29,13 +29,13 @@ export function StatsCards({ totalClients, totalRevenue, thisMonthSessions, acti
           />
         </svg>
       ),
-      bgColor: "bg-blue-50",
+      bgColor: "bg-accent",
     },
     {
       title: "Total Revenue",
       value: formatCurrency(totalRevenue),
       icon: (
-        <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -44,13 +44,13 @@ export function StatsCards({ totalClients, totalRevenue, thisMonthSessions, acti
           />
         </svg>
       ),
-      bgColor: "bg-green-50",
+      bgColor: "bg-accent",
     },
     {
       title: "This Month's Sessions",
       value: thisMonthSessions.toString(),
       icon: (
-        <svg className="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -59,17 +59,17 @@ export function StatsCards({ totalClients, totalRevenue, thisMonthSessions, acti
           />
         </svg>
       ),
-      bgColor: "bg-purple-50",
+      bgColor: "bg-accent",
     },
     {
       title: "Active Leads",
       value: activeLeads.toString(),
       icon: (
-        <svg className="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
         </svg>
       ),
-      bgColor: "bg-orange-50",
+      bgColor: "bg-accent",
     },
   ]
 
@@ -78,11 +78,11 @@ export function StatsCards({ totalClients, totalRevenue, thisMonthSessions, acti
       {stats.map((stat, index) => (
         <Card key={index} className="border-0 shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-gray-600">{stat.title}</CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground">{stat.title}</CardTitle>
             <div className={`p-2 rounded-lg ${stat.bgColor}`}>{stat.icon}</div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-gray-900">{stat.value}</div>
+            <div className="text-2xl font-bold text-foreground">{stat.value}</div>
           </CardContent>
         </Card>
       ))}
