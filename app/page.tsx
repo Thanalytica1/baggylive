@@ -14,9 +14,11 @@ export default function HomePage() {
             <h1 className="text-5xl font-bold text-gray-900 mb-6">
               Welcome to <span className="text-blue-600">GymBag</span>
             </h1>
+            <h1 className="text-5xl font-bold text-gray-900 mb-6">
+              Run Your Coaching Business Without Spreadsheets
+            </h1>
             <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-              The complete business management platform for personal trainers. Manage clients, schedule sessions, track
-              payments, and grow your fitness business.
+              GymBag is your all-in-one cockpit to manage clients, sessions, packages, and growth — built for independent trainers and wellness professionals.
             </p>
           </div>
 
@@ -56,8 +58,8 @@ export default function HomePage() {
                   />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Session Scheduling</h3>
-              <p className="text-gray-600">Easy booking system with calendar integration and automated reminders</p>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Sessions & Scheduling</h3>
+              <p className="text-gray-600">Create, complete, and track sessions in seconds—whether in-person or online.</p>
             </div>
 
             <div className="text-center p-6">
@@ -71,8 +73,8 @@ export default function HomePage() {
                   />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Payment Processing</h3>
-              <p className="text-gray-600">Secure payment handling with automated invoicing and financial tracking</p>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Packages & Payments</h3>
+              <p className="text-gray-600">Track session packs and log revenue manually. Keep your finances organized without complex software.</p>
             </div>
           </div>
         </div>
