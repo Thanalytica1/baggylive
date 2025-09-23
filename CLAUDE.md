@@ -5,10 +5,12 @@
 **GymBag** is a comprehensive business management platform designed specifically for personal trainers. It provides tools for client management, session scheduling, payment processing, and lead conversion in a single, integrated application.
 
 ### Key Features
-- **Client Management** - Track client progress, manage packages, and maintain detailed profiles
-- **Session Scheduling** - Booking system with calendar integration and automated reminders
-- **Payment Processing** - Secure payment handling with automated invoicing and financial tracking
-- **Lead Management** - Convert prospects to clients with streamlined workflows
+- **Sessions & Scheduling** - Create, complete, and track sessions in seconds—whether in-person or online
+- **Client Profiles & Notes** - Keep detailed notes, history, and milestones so you remember the little things that build long-term relationships
+- **Smart Reminders & Follow-ups** - Automate renewals, check-ins, and client milestones so you never miss an important moment
+- **Packages & Payments** - Track session packs and log revenue manually. Keep your finances organized without complex software
+- **Dashboard & Growth Tools** - See sessions this week, revenue this month, and who needs follow-up. Plan posts and manage leads in one place
+- **Built for Every Professional** - Mobile-first and adaptable for trainers, yoga, Pilates, nutrition, and wellness pros—run your business anywhere
 - **Multi-tenant Architecture** - Each trainer sees only their own data
 
 ### Tech Stack
