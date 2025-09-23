@@ -109,7 +109,9 @@ app/
 - **Client Management**: `components/clients/` - Client profiles, progress tracking
 - **Session Scheduling**: `components/sessions/` - Booking system, calendar integration
 - **UI Components**: `components/ui/` - Reusable shadcn/ui components
-- **Theme Provider**: `components/theme-provider.tsx` - Dark/light mode support
+- **Theme System**:
+  - `components/theme-provider.tsx` - Next-themes wrapper for dark/light mode
+  - `components/ui/theme-toggle.tsx` - Theme switching UI component
 
 ### Conventions
 - **File Naming**: kebab-case for files, PascalCase for components
@@ -213,3 +215,18 @@ The project is optimized for Vercel deployment:
 - **Database access**: Verify RLS policies with `auth.uid()`
 - **Build errors**: Check `next.config.mjs` for ignored errors
 - **Styling**: Ensure Tailwind classes are properly applied
+- **Theme switching issues**: Ensure ThemeProvider wraps the app without custom mounting delays
+
+## Recent Updates & Fixes
+
+### Theme System Implementation (2025-01-23)
+
+- Fixed hydration issues with next-themes by removing custom mounting logic
+- Implemented proper dark/light mode switching with system preference support
+- Theme persistence via localStorage with key `gymbag-theme`
+- Components properly handle hydration with built-in next-themes safety
+
+### Known Issues & Solutions
+
+- **Theme toggle "setTheme is not a function"**: Fixed by ensuring ThemeProvider initializes immediately without delays
+- **Hydration mismatches**: Handled by next-themes' built-in hydration safety features
