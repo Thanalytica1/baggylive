@@ -24,7 +24,7 @@ export function EditLeadModal({ lead, onClose }: EditLeadModalProps) {
     email: lead.email || "",
     phone: lead.phone || "",
     source: lead.source || "website",
-    status: lead.status || "active",
+    status: lead.status || "new",
     notes: lead.notes || "",
     follow_up_date: lead.follow_up_date || "",
   })
@@ -40,15 +40,60 @@ export function EditLeadModal({ lead, onClose }: EditLeadModalProps) {
     const supabase = createClient()
 
     try {
-      const { error: updateError } = await supabase
-        .from("leads")
-        .update({
-          ...formData,
-          follow_up_date: formData.follow_up_date || null,
-        })
-        .eq("id", lead.id)
+      // Check if status is being changed to converted
+      if (formData.status === "converted" && lead.status !== "converted") {
+        // Get current user
+        const { data: { user } } = await supabase.auth.getUser()
+        if (!user) throw new Error("Not authenticated")
 
-      if (updateError) throw updateError
+        // Create a new client from the lead data
+        const { data: clientData, error: clientError } = await supabase
+          .from("clients")
+          .insert({
+            trainer_id: user.id,
+            first_name: formData.first_name,
+            last_name: formData.last_name,
+            email: formData.email,
+            phone: formData.phone,
+            status: "active",
+            notes: formData.notes,
+            referral_source: formData.source,
+            converted_from_lead_id: lead.id,
+            start_date: new Date().toISOString().split("T")[0],
+          })
+          .select()
+          .single()
+
+        if (clientError) throw clientError
+
+        // Update the lead with converted status and link to client
+        const { error: updateError } = await supabase
+          .from("leads")
+          .update({
+            ...formData,
+            follow_up_date: formData.follow_up_date || null,
+            converted_to_client_id: clientData.id,
+            converted_at: new Date().toISOString(),
+          })
+          .eq("id", lead.id)
+
+        if (updateError) {
+          // Rollback: delete the client if lead update fails
+          await supabase.from("clients").delete().eq("id", clientData.id)
+          throw updateError
+        }
+      } else {
+        // Regular update without conversion
+        const { error: updateError } = await supabase
+          .from("leads")
+          .update({
+            ...formData,
+            follow_up_date: formData.follow_up_date || null,
+          })
+          .eq("id", lead.id)
+
+        if (updateError) throw updateError
+      }
 
       router.refresh()
       onClose()
@@ -159,8 +204,9 @@ export function EditLeadModal({ lead, onClose }: EditLeadModalProps) {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="active">Active</SelectItem>
-                  <SelectItem value="cold">Cold</SelectItem>
+                  <SelectItem value="new">New</SelectItem>
+                  <SelectItem value="contacted">Contacted</SelectItem>
+                  <SelectItem value="qualified">Qualified</SelectItem>
                   <SelectItem value="converted">Converted</SelectItem>
                   <SelectItem value="lost">Lost</SelectItem>
                 </SelectContent>
@@ -188,6 +234,14 @@ export function EditLeadModal({ lead, onClose }: EditLeadModalProps) {
               rows={3}
             />
           </div>
+
+          {formData.status === "converted" && lead.status !== "converted" && (
+            <div className="p-4 bg-blue-50 border border-blue-200 rounded-md">
+              <p className="text-sm text-blue-800">
+                <strong>Note:</strong> Changing status to "Converted" will automatically create a new client record with this lead's information.
+              </p>
+            </div>
+          )}
 
           {error && <div className="p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md">{error}</div>}
 
