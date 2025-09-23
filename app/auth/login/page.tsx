@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Logo } from "@/components/ui/logo"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
@@ -43,10 +44,8 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         <Card className="shadow-xl border-0">
           <CardHeader className="space-y-1 text-center">
-            <div className="mx-auto w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center mb-4">
-              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-              </svg>
+            <div className="flex justify-center mb-4">
+              <Logo size="md" />
             </div>
             <CardTitle className="text-2xl font-bold text-gray-900">Welcome to GymBag</CardTitle>
             <CardDescription className="text-gray-600">

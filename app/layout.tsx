@@ -10,6 +10,10 @@ export const metadata: Metadata = {
   title: "GymBag - Personal Training Management Platform",
   description: "Complete business management platform for personal trainers",
   generator: "v0.app",
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/logo.png",
+  },
 }
 
 export default function RootLayout({
