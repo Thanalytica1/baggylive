@@ -15,8 +15,19 @@ export function ThemeToggle() {
   const { setTheme, theme, resolvedTheme } = useTheme()
   const [mounted, setMounted] = React.useState(false)
 
+  // DEBUG: Log hook values
+  React.useEffect(() => {
+    console.log('[ThemeToggle Debug] Hook values:', {
+      theme,
+      resolvedTheme,
+      setTheme: typeof setTheme,
+      mounted
+    })
+  }, [theme, resolvedTheme, setTheme, mounted])
+
   React.useEffect(() => {
     setMounted(true)
+    console.log('[ThemeToggle Debug] Component mounted')
   }, [])
 
   const getIcon = () => {
@@ -35,7 +46,10 @@ export function ThemeToggle() {
   }
 
   const handleThemeChange = (newTheme: string) => {
+    console.log('[ThemeToggle Debug] handleThemeChange called with:', newTheme)
+    console.log('[ThemeToggle Debug] Current theme before change:', theme)
     setTheme(newTheme)
+    console.log('[ThemeToggle Debug] setTheme called')
   }
 
   if (!mounted) {
