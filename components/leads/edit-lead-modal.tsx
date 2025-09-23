@@ -57,23 +57,18 @@ export function EditLeadModal({ lead, onClose }: EditLeadModalProps) {
             phone: formData.phone,
             status: "active",
             notes: formData.notes,
-            referral_source: formData.source,
-            converted_from_lead_id: lead.id,
-            start_date: new Date().toISOString().split("T")[0],
           })
           .select()
           .single()
 
         if (clientError) throw clientError
 
-        // Update the lead with converted status and link to client
+        // Update the lead with converted status
         const { error: updateError } = await supabase
           .from("leads")
           .update({
             ...formData,
             follow_up_date: formData.follow_up_date || null,
-            converted_to_client_id: clientData.id,
-            converted_at: new Date().toISOString(),
           })
           .eq("id", lead.id)
 
