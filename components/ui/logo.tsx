@@ -2,7 +2,7 @@ import Image from "next/image"
 import { cn } from "@/lib/utils"
 
 interface LogoProps {
-  size?: "sm" | "md" | "lg" | "xl"
+  size?: "sm" | "md" | "lg" | "xl" | "3xl"
   className?: string
   showText?: boolean
 }
@@ -12,6 +12,7 @@ const sizeMap = {
   md: { width: 48, height: 48 },
   lg: { width: 64, height: 64 },
   xl: { width: 80, height: 80 },
+  "3xl": { width: 192, height: 192 },
 }
 
 export function Logo({ size = "md", className, showText = false }: LogoProps) {
@@ -33,7 +34,8 @@ export function Logo({ size = "md", className, showText = false }: LogoProps) {
           size === "sm" && "text-lg",
           size === "md" && "text-xl",
           size === "lg" && "text-2xl",
-          size === "xl" && "text-3xl"
+          size === "xl" && "text-3xl",
+          size === "3xl" && "text-5xl"
         )}>
           GymBag
         </span>

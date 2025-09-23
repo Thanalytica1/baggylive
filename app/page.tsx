@@ -9,7 +9,7 @@ export default function HomePage() {
         <div className="text-center max-w-4xl mx-auto">
           <div className="mb-8">
             <div className="flex justify-center mb-6">
-              <Logo size="lg" />
+              <Logo size="3xl" />
             </div>
             <h1 className="text-5xl font-bold text-gray-900 mb-6">
               Welcome to <span className="text-blue-600">GymBag</span>
