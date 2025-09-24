@@ -68,9 +68,13 @@ Access the application at `http://localhost:3000`
 
 ### Database Design
 - **Multi-tenant**: Each trainer's data isolated via Row Level Security (RLS)
-- **Core Tables**: `profiles`, `clients`, `sessions`, `packages`, `payments`, `leads`
+- **Core Tables**: `profiles`, `clients`, `sessions`, `packages`, `payments`, `leads`, `client_packages`
 - **Security**: All tables use `auth.uid() = trainer_id` policies
 - **Auto-triggers**: Profile creation on user signup
+- **Data Relationships**:
+  - `packages`: Template definitions (e.g., "5 sessions for $400")
+  - `client_packages`: Actual purchased instances owned by clients
+  - `payments`: Financial transactions, can reference `client_packages` or `sessions`
 
 ### App Structure
 ```
@@ -132,11 +136,19 @@ app/
 profiles          # Trainer profiles (1:1 with auth.users)
 clients           # Client information
 sessions          # Training sessions
-packages          # Service packages
-client_packages   # Client-package relationships
-payments          # Payment records
+packages          # Service package templates (definitions)
+client_packages   # Actual purchased package instances
+payments          # Payment records (references client_packages or sessions)
 leads             # Prospective clients
 ```
+
+### Payment System Architecture
+- **Package Templates** (`packages` table): Service offerings defined by trainer
+- **Package Instances** (`client_packages` table): Actual purchases by clients
+- **Payment Flow**:
+  1. For package purchase: Create `client_package` → Create `payment` with `client_package_id`
+  2. For session payment: Create `payment` with `session_id`
+- **Data Integrity**: Maintains proper foreign key relationships
 
 ### Row Level Security (RLS)
 All tables implement trainer-specific access control:
@@ -217,7 +229,36 @@ The project is optimized for Vercel deployment:
 - **Styling**: Ensure Tailwind classes are properly applied
 - **Theme switching issues**: Ensure ThemeProvider wraps the app without custom mounting delays
 
+## Development Philosophy
+
+### "The That's It" Approach
+- Fix what's broken, don't over-engineer what's working
+- Add complexity only when users demand it
+- For a single trainer managing a few dozen clients, simple validation is exactly right
+- Solve real problems without creating new ones
+- Pragmatic solutions over theoretical perfection
+
 ## Recent Updates & Fixes
+
+### Performance Optimizations (2025-01-24)
+
+- **Memoized Dashboard Components**: Implemented useMemo hooks to prevent expensive recalculations
+  - `RevenueChart`: Monthly revenue grouping now cached
+  - `PaymentStats`: 6 different statistics calculations memoized
+  - `LeadStats`: Lead source grouping and sorting optimized
+  - `ClientsOverview`: Client status grouping cached
+- **Impact**: Significant performance improvement on mobile devices
+- **Technical Approach**: Pure calculations wrapped in useMemo with proper dependencies
+
+### Payment System Fix (2025-01-24)
+
+- **Issue**: Database schema error - "Could not find the 'package_id' column of 'payments'"
+- **Root Cause**: System conflated package templates with package instances
+- **Solution**: Fixed data flow to properly handle package purchases:
+  1. Create `client_packages` record first when package selected
+  2. Get the client package ID
+  3. Reference it in payment record via `client_package_id`
+- **Result**: Proper relationship chain: payments → client_packages → packages
 
 ### Theme System Implementation (2025-01-23)
 
@@ -230,3 +271,4 @@ The project is optimized for Vercel deployment:
 
 - **Theme toggle "setTheme is not a function"**: Fixed by ensuring ThemeProvider initializes immediately without delays
 - **Hydration mismatches**: Handled by next-themes' built-in hydration safety features
+- **Payment recording with packages**: Fixed by creating client_package before payment record
