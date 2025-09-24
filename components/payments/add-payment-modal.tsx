@@ -25,7 +25,7 @@ export function AddPaymentModal({ clients, packages, onClose }: AddPaymentModalP
     payment_date: new Date().toISOString().split("T")[0],
     status: "completed",
     currency: "USD",
-    package_id: "",
+    package_id: "", // Used for UI selection only, not stored in payments table
     session_id: "",
     stripe_payment_intent_id: "",
   })
@@ -46,24 +46,56 @@ export function AddPaymentModal({ clients, packages, onClose }: AddPaymentModalP
       } = await supabase.auth.getUser()
       if (!user) throw new Error("Not authenticated")
 
-      // Create payment record
+      // Validate payment amount
       const amount = Number.parseFloat(formData.amount) || 0
       if (amount <= 0) {
         throw new Error("Payment amount must be greater than $0.00")
       }
 
+      let clientPackageId = null
+
+      // If this is a package payment, create client_package record first
+      if (formData.package_id && formData.status === "completed") {
+        const selectedPackage = packages.find((pkg) => pkg.id === formData.package_id)
+        if (selectedPackage) {
+          const { data: clientPackage, error: packageError } = await supabase
+            .from("client_packages")
+            .insert({
+              client_id: formData.client_id,
+              package_id: formData.package_id,
+              sessions_remaining: selectedPackage.session_count,
+              sessions_total: selectedPackage.session_count,
+              purchase_date: formData.payment_date,
+              expiry_date: new Date(Date.now() + selectedPackage.duration_days * 24 * 60 * 60 * 1000).toISOString(),
+              amount_paid: amount,
+              status: "active",
+            })
+            .select()
+            .single()
+
+          if (packageError) throw packageError
+          clientPackageId = clientPackage.id
+        }
+      }
+
+      // Create payment record with proper client_package_id reference
       const paymentData = {
-        ...formData,
         trainer_id: user.id,
+        client_id: formData.client_id,
         amount: amount,
-        client_package_id: formData.package_id || null,
+        payment_method: formData.payment_method,
+        payment_date: formData.payment_date,
+        status: formData.status,
+        currency: formData.currency,
+        client_package_id: clientPackageId,
         session_id: formData.session_id || null,
         stripe_payment_intent_id: formData.stripe_payment_intent_id || null,
       }
 
-      // Remove empty fields
+      // Remove null/empty fields
       Object.keys(paymentData).forEach((key) => {
-        if (paymentData[key as keyof typeof paymentData] === "") {
+        const value = paymentData[key as keyof typeof paymentData]
+        if (value === "" || value === null) {
           delete paymentData[key as keyof typeof paymentData]
         }
       })
@@ -71,25 +103,6 @@ export function AddPaymentModal({ clients, packages, onClose }: AddPaymentModalP
       const { error: paymentError } = await supabase.from("payments").insert(paymentData)
 
       if (paymentError) throw paymentError
-
-      // If this is a package payment, create client_package record
-      if (formData.package_id && formData.status === "completed") {
-        const selectedPackage = packages.find((pkg) => pkg.id === formData.package_id)
-        if (selectedPackage) {
-          const { error: packageError } = await supabase.from("client_packages").insert({
-            client_id: formData.client_id,
-            package_id: formData.package_id,
-            sessions_remaining: selectedPackage.session_count,
-            sessions_total: selectedPackage.session_count,
-            purchase_date: formData.payment_date,
-            expiry_date: new Date(Date.now() + selectedPackage.duration_days * 24 * 60 * 60 * 1000).toISOString(),
-            amount_paid: amount,
-            status: "active",
-          })
-
-          if (packageError) throw packageError
-        }
-      }
 
       router.refresh()
       onClose()
