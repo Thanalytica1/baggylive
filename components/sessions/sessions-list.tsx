@@ -13,14 +13,17 @@ interface SessionsListProps {
 export function SessionsList({ sessions }: SessionsListProps) {
   const [selectedSession, setSelectedSession] = useState<any>(null)
 
-  // Get upcoming sessions (next 7 days)
+  // Get sessions that need attention (past 48 hours to next 7 days)
   const now = new Date()
+  const twoDaysAgo = new Date(now.getTime() - 48 * 60 * 60 * 1000)
   const nextWeek = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000)
 
   const upcomingSessions = sessions
     .filter((session) => {
       const sessionDate = new Date(session.scheduled_at)
-      return sessionDate >= now && sessionDate <= nextWeek
+      // Include past sessions from last 48 hours that are still scheduled (not completed/cancelled)
+      // and future sessions for the next week
+      return sessionDate >= twoDaysAgo && sessionDate <= nextWeek && session.status === 'scheduled'
     })
     .sort((a, b) => new Date(a.scheduled_at).getTime() - new Date(b.scheduled_at).getTime())
 
@@ -56,7 +59,7 @@ export function SessionsList({ sessions }: SessionsListProps) {
     <>
       <Card className="border-0 shadow-sm">
         <CardHeader>
-          <CardTitle className="text-lg font-semibold text-gray-900">Upcoming Sessions</CardTitle>
+          <CardTitle className="text-lg font-semibold text-gray-900">Sessions to Review</CardTitle>
         </CardHeader>
         <CardContent>
           {upcomingSessions.length === 0 ? (
