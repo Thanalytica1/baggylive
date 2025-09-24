@@ -1,3 +1,4 @@
+import { useMemo } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 interface LeadStatsProps {
@@ -5,24 +6,28 @@ interface LeadStatsProps {
 }
 
 export function LeadStats({ leads }: LeadStatsProps) {
-  const totalLeads = leads.length
-  const activeLeads = leads.filter((lead) => lead.status === "active").length
-  const convertedLeads = leads.filter((lead) => lead.status === "converted").length
-  const coldLeads = leads.filter((lead) => lead.status === "cold").length
+  // Memoize all lead statistics calculations
+  const { totalLeads, activeLeads, conversionRate, topSource } = useMemo(() => {
+    const totalLeads = leads.length
+    const activeLeads = leads.filter((lead) => lead.status === "active").length
+    const convertedLeads = leads.filter((lead) => lead.status === "converted").length
 
-  const conversionRate = totalLeads > 0 ? (convertedLeads / totalLeads) * 100 : 0
+    const conversionRate = totalLeads > 0 ? (convertedLeads / totalLeads) * 100 : 0
 
-  // Calculate leads by source
-  const leadSources = leads.reduce(
-    (acc, lead) => {
-      const source = lead.source || "unknown"
-      acc[source] = (acc[source] || 0) + 1
-      return acc
-    },
-    {} as Record<string, number>,
-  )
+    // Calculate leads by source
+    const leadSources = leads.reduce(
+      (acc, lead) => {
+        const source = lead.source || "unknown"
+        acc[source] = (acc[source] || 0) + 1
+        return acc
+      },
+      {} as Record<string, number>,
+    )
 
-  const topSource = Object.entries(leadSources).sort(([, a], [, b]) => (b as number) - (a as number))[0]
+    const topSource = Object.entries(leadSources).sort(([, a], [, b]) => (b as number) - (a as number))[0]
+
+    return { totalLeads, activeLeads, conversionRate, topSource }
+  }, [leads])
 
   const stats = [
     {

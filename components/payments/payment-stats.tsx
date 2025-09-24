@@ -1,3 +1,4 @@
+import { useMemo } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 interface PaymentStatsProps {
@@ -9,30 +10,34 @@ export function PaymentStats({ payments }: PaymentStatsProps) {
   const currentMonth = now.getMonth()
   const currentYear = now.getFullYear()
 
-  // Calculate stats
-  const totalRevenue = payments.reduce((sum, payment) => sum + (payment.amount || 0), 0)
+  // Memoize all expensive statistics calculations
+  const { totalRevenue, thisMonthRevenue, lastMonthRevenue, pendingPayments, averagePayment, monthlyGrowth } = useMemo(() => {
+    const totalRevenue = payments.reduce((sum, payment) => sum + (payment.amount || 0), 0)
 
-  const thisMonthRevenue = payments
-    .filter((payment) => {
-      const paymentDate = new Date(payment.payment_date)
-      return paymentDate.getMonth() === currentMonth && paymentDate.getFullYear() === currentYear
-    })
-    .reduce((sum, payment) => sum + (payment.amount || 0), 0)
+    const thisMonthRevenue = payments
+      .filter((payment) => {
+        const paymentDate = new Date(payment.payment_date)
+        return paymentDate.getMonth() === currentMonth && paymentDate.getFullYear() === currentYear
+      })
+      .reduce((sum, payment) => sum + (payment.amount || 0), 0)
 
-  const lastMonthRevenue = payments
-    .filter((payment) => {
-      const paymentDate = new Date(payment.payment_date)
-      const lastMonth = currentMonth === 0 ? 11 : currentMonth - 1
-      const lastMonthYear = currentMonth === 0 ? currentYear - 1 : currentYear
-      return paymentDate.getMonth() === lastMonth && paymentDate.getFullYear() === lastMonthYear
-    })
-    .reduce((sum, payment) => sum + (payment.amount || 0), 0)
+    const lastMonthRevenue = payments
+      .filter((payment) => {
+        const paymentDate = new Date(payment.payment_date)
+        const lastMonth = currentMonth === 0 ? 11 : currentMonth - 1
+        const lastMonthYear = currentMonth === 0 ? currentYear - 1 : currentYear
+        return paymentDate.getMonth() === lastMonth && paymentDate.getFullYear() === lastMonthYear
+      })
+      .reduce((sum, payment) => sum + (payment.amount || 0), 0)
 
-  const pendingPayments = payments.filter((payment) => payment.status === "pending").length
+    const pendingPayments = payments.filter((payment) => payment.status === "pending").length
 
-  const averagePayment = payments.length > 0 ? totalRevenue / payments.length : 0
+    const averagePayment = payments.length > 0 ? totalRevenue / payments.length : 0
 
-  const monthlyGrowth = lastMonthRevenue > 0 ? ((thisMonthRevenue - lastMonthRevenue) / lastMonthRevenue) * 100 : 0
+    const monthlyGrowth = lastMonthRevenue > 0 ? ((thisMonthRevenue - lastMonthRevenue) / lastMonthRevenue) * 100 : 0
+
+    return { totalRevenue, thisMonthRevenue, lastMonthRevenue, pendingPayments, averagePayment, monthlyGrowth }
+  }, [payments, currentMonth, currentYear])
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat("en-US", {

@@ -1,5 +1,6 @@
 "use client"
 
+import { useMemo } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts"
 
@@ -8,23 +9,26 @@ interface RevenueChartProps {
 }
 
 export function RevenueChart({ payments }: RevenueChartProps) {
-  // Group payments by month
-  const monthlyRevenue = payments.reduce(
-    (acc, payment) => {
-      const date = new Date(payment.payment_date)
-      const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`
-      const monthName = date.toLocaleDateString("en-US", { month: "short", year: "numeric" })
+  // Memoize the expensive monthly revenue calculation
+  const chartData = useMemo(() => {
+    // Group payments by month
+    const monthlyRevenue = payments.reduce(
+      (acc, payment) => {
+        const date = new Date(payment.payment_date)
+        const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`
+        const monthName = date.toLocaleDateString("en-US", { month: "short", year: "numeric" })
 
-      if (!acc[monthKey]) {
-        acc[monthKey] = { month: monthName, revenue: 0 }
-      }
-      acc[monthKey].revenue += payment.amount || 0
-      return acc
-    },
-    {} as Record<string, { month: string; revenue: number }>,
-  )
+        if (!acc[monthKey]) {
+          acc[monthKey] = { month: monthName, revenue: 0 }
+        }
+        acc[monthKey].revenue += payment.amount || 0
+        return acc
+      },
+      {} as Record<string, { month: string; revenue: number }>,
+    )
 
-  const chartData = Object.values(monthlyRevenue).slice(-6) // Last 6 months
+    return Object.values(monthlyRevenue).slice(-6) // Last 6 months
+  }, [payments])
 
   return (
     <Card className="border-0 shadow-sm">

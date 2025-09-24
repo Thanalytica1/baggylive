@@ -1,5 +1,6 @@
 "use client"
 
+import { useMemo } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts"
 
@@ -8,20 +9,23 @@ interface ClientsOverviewProps {
 }
 
 export function ClientsOverview({ clients }: ClientsOverviewProps) {
-  // Group clients by status
-  const statusCounts = clients.reduce(
-    (acc, client) => {
-      const status = client.status || "active"
-      acc[status] = (acc[status] || 0) + 1
-      return acc
-    },
-    {} as Record<string, number>,
-  )
+  // Memoize the client status grouping calculation
+  const chartData = useMemo(() => {
+    // Group clients by status
+    const statusCounts = clients.reduce(
+      (acc, client) => {
+        const status = client.status || "active"
+        acc[status] = (acc[status] || 0) + 1
+        return acc
+      },
+      {} as Record<string, number>,
+    )
 
-  const chartData = Object.entries(statusCounts).map(([status, count]) => ({
-    name: status.charAt(0).toUpperCase() + status.slice(1),
-    value: count as number,
-  }))
+    return Object.entries(statusCounts).map(([status, count]) => ({
+      name: status.charAt(0).toUpperCase() + status.slice(1),
+      value: count as number,
+    }))
+  }, [clients])
 
   const COLORS = ["#3b82f6", "#10b981", "#f59e0b", "#ef4444"]
 
