@@ -60,18 +60,25 @@ export function SessionDetailsModal({ session, onClose }: SessionDetailsModalPro
     try {
       const previousStatus = session.status
 
+      // Check if marking as complete with a package that has no sessions remaining
+      if (formData.status === "completed" && previousStatus !== "completed" && session.client_package_id) {
+        const { data: clientPackage } = await supabase
+          .from("client_packages")
+          .select("sessions_remaining")
+          .eq("id", session.client_package_id)
+          .single()
+
+        if (clientPackage && clientPackage.sessions_remaining <= 0) {
+          throw new Error("Cannot mark session as completed: Package has no remaining sessions")
+        }
+      }
+
       const { error: updateError } = await supabase.from("sessions").update(formData).eq("id", session.id)
 
       if (updateError) throw updateError
 
-      // If session was marked as completed and has a package, ensure session count is properly decremented
-      if (formData.status === "completed" && previousStatus !== "completed" && session.client_package_id) {
-        // Session was just completed - no additional action needed as count was already decremented when scheduled
-        console.log("[v0] Session marked as completed - package count already decremented when scheduled")
-      }
-
-      // If session was uncompleted (changed from completed to scheduled/cancelled), restore the session count
-      if (previousStatus === "completed" && formData.status !== "completed" && session.client_package_id) {
+      // Handle package count updates based on status changes
+      if (session.client_package_id) {
         const { data: clientPackage } = await supabase
           .from("client_packages")
           .select("sessions_remaining")
@@ -79,12 +86,28 @@ export function SessionDetailsModal({ session, onClose }: SessionDetailsModalPro
           .single()
 
         if (clientPackage) {
-          await supabase
-            .from("client_packages")
-            .update({
-              sessions_remaining: clientPackage.sessions_remaining + 1,
-            })
-            .eq("id", session.client_package_id)
+          let newCount = clientPackage.sessions_remaining
+
+          // Session being marked as completed (scheduled/cancelled -> completed)
+          if (formData.status === "completed" && previousStatus !== "completed") {
+            newCount = clientPackage.sessions_remaining - 1
+          }
+          // Session being uncompleted (completed -> scheduled/cancelled)
+          else if (previousStatus === "completed" && formData.status !== "completed") {
+            newCount = clientPackage.sessions_remaining + 1
+          }
+          // No change for scheduled -> cancelled or cancelled -> scheduled
+
+          if (newCount !== clientPackage.sessions_remaining) {
+            const { error: updateError } = await supabase
+              .from("client_packages")
+              .update({
+                sessions_remaining: newCount,
+              })
+              .eq("id", session.client_package_id)
+
+            if (updateError) throw updateError
+          }
         }
       }
 
@@ -109,8 +132,8 @@ export function SessionDetailsModal({ session, onClose }: SessionDetailsModalPro
     const supabase = createClient()
 
     try {
-      // If session was using a package and is being deleted, restore the session count
-      if (session.client_package_id && session.status === "scheduled") {
+      // If session was completed and using a package, restore the session count
+      if (session.client_package_id && session.status === "completed") {
         const { data: clientPackage } = await supabase
           .from("client_packages")
           .select("sessions_remaining")

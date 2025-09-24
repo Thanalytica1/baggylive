@@ -57,25 +57,7 @@ export function AddSessionModal({ clients, onClose }: AddSessionModalProps) {
 
       if (sessionError) throw sessionError
 
-      // If using a package, decrement sessions remaining
-      if (formData.client_package_id) {
-        const { data: clientPackage } = await supabase
-          .from("client_packages")
-          .select("sessions_remaining")
-          .eq("id", formData.client_package_id)
-          .single()
-
-        if (clientPackage) {
-          const { error: updateError } = await supabase
-            .from("client_packages")
-            .update({
-              sessions_remaining: clientPackage.sessions_remaining - 1,
-            })
-            .eq("id", formData.client_package_id)
-
-          if (updateError) throw updateError
-        }
-      }
+      // Package count will be decremented only when session is marked as completed
 
       router.refresh()
       onClose()

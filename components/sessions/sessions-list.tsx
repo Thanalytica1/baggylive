@@ -4,6 +4,7 @@ import { useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { SessionDetailsModal } from "./session-details-modal"
+import { SessionActions } from "./session-actions"
 
 interface SessionsListProps {
   sessions: any[]
@@ -80,13 +81,12 @@ export function SessionsList({ sessions }: SessionsListProps) {
               {upcomingSessions.map((session) => {
                 const { date, time } = formatDateTime(session.scheduled_at)
                 return (
-                  <div
-                    key={session.id}
-                    className="p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
-                    onClick={() => setSelectedSession(session)}
-                  >
+                  <div key={session.id} className="p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
                     <div className="flex items-start justify-between mb-2">
-                      <div>
+                      <div
+                        className="cursor-pointer flex-1"
+                        onClick={() => setSelectedSession(session)}
+                      >
                         <h4 className="font-medium text-gray-900">
                           {session.clients?.first_name} {session.clients?.last_name}
                         </h4>
@@ -94,11 +94,14 @@ export function SessionsList({ sessions }: SessionsListProps) {
                       </div>
                       <Badge className={getStatusColor(session.status)}>{session.status}</Badge>
                     </div>
-                    <div className="flex items-center justify-between text-sm text-gray-600">
-                      <span>
-                        {date} at {time}
-                      </span>
-                      <span>{session.duration_minutes} min</span>
+                    <div className="flex items-center justify-between">
+                      <div className="text-sm text-gray-600">
+                        <span>
+                          {date} at {time}
+                        </span>
+                        <span className="ml-2">{session.duration_minutes} min</span>
+                      </div>
+                      <SessionActions session={session} />
                     </div>
                   </div>
                 )
