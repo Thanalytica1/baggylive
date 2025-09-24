@@ -47,10 +47,15 @@ export function AddPaymentModal({ clients, packages, onClose }: AddPaymentModalP
       if (!user) throw new Error("Not authenticated")
 
       // Create payment record
+      const amount = Number.parseFloat(formData.amount) || 0
+      if (amount <= 0) {
+        throw new Error("Payment amount must be greater than $0.00")
+      }
+
       const paymentData = {
         ...formData,
         trainer_id: user.id,
-        amount: Number.parseFloat(formData.amount),
+        amount: amount,
         client_package_id: formData.package_id || null,
         session_id: formData.session_id || null,
         stripe_payment_intent_id: formData.stripe_payment_intent_id || null,
@@ -78,7 +83,7 @@ export function AddPaymentModal({ clients, packages, onClose }: AddPaymentModalP
             sessions_total: selectedPackage.session_count,
             purchase_date: formData.payment_date,
             expiry_date: new Date(Date.now() + selectedPackage.duration_days * 24 * 60 * 60 * 1000).toISOString(),
-            amount_paid: Number.parseFloat(formData.amount),
+            amount_paid: amount,
             status: "active",
           })
 
@@ -129,7 +134,7 @@ export function AddPaymentModal({ clients, packages, onClose }: AddPaymentModalP
                 id="amount"
                 type="number"
                 step="0.01"
-                min="0"
+                min="0.01"
                 required
                 value={formData.amount}
                 onChange={(e) => setFormData({ ...formData, amount: e.target.value })}

@@ -147,6 +147,12 @@ export function EditClientModal({ client, packages, onClose }: EditClientModalPr
       // Calculate expiry date
       const expiryDate = new Date(Date.now() + (selectedPackage.duration_days || 30) * 24 * 60 * 60 * 1000).toISOString()
 
+      // Validate and parse amount
+      const amountPaid = Number.parseFloat(packageAmount || selectedPackage.price) || 0
+      if (amountPaid <= 0) {
+        throw new Error("Package amount must be greater than $0.00")
+      }
+
       // Create client_package record
       const { data: clientPackage, error: packageError } = await supabase
         .from("client_packages")
@@ -157,7 +163,7 @@ export function EditClientModal({ client, packages, onClose }: EditClientModalPr
           sessions_total: selectedPackage.session_count,
           purchase_date: new Date().toISOString(),
           expiry_date: expiryDate,
-          amount_paid: Number.parseFloat(packageAmount || selectedPackage.price),
+          amount_paid: amountPaid,
           status: "active",
         })
         .select()
@@ -170,7 +176,7 @@ export function EditClientModal({ client, packages, onClose }: EditClientModalPr
         const { error: paymentError } = await supabase.from("payments").insert({
           trainer_id: user.id,
           client_id: client.id,
-          amount: Number.parseFloat(packageAmount || selectedPackage.price),
+          amount: amountPaid,
           payment_method: packagePaymentMethod,
           payment_date: new Date().toISOString(),
           status: packagePaymentStatus,
