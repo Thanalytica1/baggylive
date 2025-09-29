@@ -39,10 +39,6 @@ function DropdownMenuContent({
   return (
     <DropdownMenuPrimitive.Portal>
       <DropdownMenuPrimitive.Content
-        side="bottom"
-        align="start"
-        avoidCollisions={true}
-        collisionPadding={8}
         {...props}
         data-slot="dropdown-menu-content"
         sideOffset={sideOffset}
