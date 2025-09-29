@@ -83,8 +83,8 @@ export function DashboardHeader({ profile }: DashboardHeaderProps) {
                   <p className="text-xs leading-none text-muted-foreground">{profile?.email}</p>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Profile Settings</DropdownMenuItem>
-                <DropdownMenuItem>Business Settings</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => router.push('/settings/profile')}>Profile Settings</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => router.push('/settings/business')}>Business Settings</DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleSignOut}>Sign out</DropdownMenuItem>
               </DropdownMenuContent>
