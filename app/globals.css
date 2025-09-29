@@ -157,8 +157,5 @@
   }
 
   /* Prevent layout shift during theme change */
-  html,
-  body {
-    overflow-x: hidden;
-  }
+  /* Note: overflow-x hidden removed to avoid interfering with dropdown portals */
 }
