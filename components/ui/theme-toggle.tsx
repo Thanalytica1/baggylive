@@ -76,22 +76,68 @@ export function ThemeToggle() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="min-w-[160px]">
+        {console.log('🎨 Dropdown content rendered')}
         <DropdownMenuItem
-          onSelect={() => handleThemeChange("light")}
+          onSelect={(e) => {
+            console.log('🎨 onSelect fired for light', e)
+            handleThemeChange("light")
+          }}
+          onClick={(e) => {
+            console.log('🎨 onClick fired for light', e)
+            e.preventDefault()
+            e.stopPropagation()
+            handleThemeChange("light")
+          }}
+          onPointerDown={(e) => {
+            console.log('🎨 onPointerDown fired for light', e)
+          }}
+          onMouseDown={(e) => {
+            console.log('🎨 onMouseDown fired for light', e)
+          }}
           className={theme === "light" ? "bg-accent text-accent-foreground" : ""}
         >
           <Sun className="mr-2 h-4 w-4" />
           Light
         </DropdownMenuItem>
         <DropdownMenuItem
-          onSelect={() => handleThemeChange("dark")}
+          onSelect={(e) => {
+            console.log('🎨 onSelect fired for dark', e)
+            handleThemeChange("dark")
+          }}
+          onClick={(e) => {
+            console.log('🎨 onClick fired for dark', e)
+            e.preventDefault()
+            e.stopPropagation()
+            handleThemeChange("dark")
+          }}
+          onPointerDown={(e) => {
+            console.log('🎨 onPointerDown fired for dark', e)
+          }}
+          onMouseDown={(e) => {
+            console.log('🎨 onMouseDown fired for dark', e)
+          }}
           className={theme === "dark" ? "bg-accent text-accent-foreground" : ""}
         >
           <Moon className="mr-2 h-4 w-4" />
           Dark
         </DropdownMenuItem>
         <DropdownMenuItem
-          onSelect={() => handleThemeChange("system")}
+          onSelect={(e) => {
+            console.log('🎨 onSelect fired for system', e)
+            handleThemeChange("system")
+          }}
+          onClick={(e) => {
+            console.log('🎨 onClick fired for system', e)
+            e.preventDefault()
+            e.stopPropagation()
+            handleThemeChange("system")
+          }}
+          onPointerDown={(e) => {
+            console.log('🎨 onPointerDown fired for system', e)
+          }}
+          onMouseDown={(e) => {
+            console.log('🎨 onMouseDown fired for system', e)
+          }}
           className={theme === "system" ? "bg-accent text-accent-foreground" : ""}
         >
           <Monitor className="mr-2 h-4 w-4" />
