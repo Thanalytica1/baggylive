@@ -11,8 +11,7 @@ export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
       defaultTheme: 'system',
       enableSystem: true,
       storageKey: 'gymbag-theme',
-      disableTransitionOnChange: false,
-      value: { light: '', dark: 'dark' }
+      disableTransitionOnChange: false
     })
 
     // Check if dark class exists on html
@@ -46,10 +45,6 @@ export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
       enableSystem
       disableTransitionOnChange={false}
       storageKey="gymbag-theme"
-      value={{
-        light: '',
-        dark: 'dark'
-      }}
       {...props}
     >
       {children}

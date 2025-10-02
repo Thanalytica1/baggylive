@@ -92,7 +92,7 @@ export function DashboardHeader({ profile }: DashboardHeaderProps) {
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                   <Avatar className="h-8 w-8">
-                    <AvatarImage src={profile?.profile_image_url || "/placeholder.svg"} alt={profile?.first_name} />
+                    <AvatarImage src={profile?.profile_image_url || "/placeholder.jpg"} alt={profile?.first_name} />
                     <AvatarFallback className="bg-primary text-primary-foreground text-sm">{initials}</AvatarFallback>
                   </Avatar>
                 </Button>
