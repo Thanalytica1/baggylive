@@ -33,7 +33,7 @@ export function RevenueChart({ payments }: RevenueChartProps) {
   return (
     <Card className="border-0 shadow-sm">
       <CardHeader>
-        <CardTitle className="text-lg font-semibold text-gray-900">Revenue Overview</CardTitle>
+        <CardTitle className="text-lg font-semibold text-foreground">Revenue Overview</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="h-80">

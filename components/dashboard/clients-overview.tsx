@@ -32,7 +32,7 @@ export function ClientsOverview({ clients }: ClientsOverviewProps) {
   return (
     <Card className="border-0 shadow-sm">
       <CardHeader>
-        <CardTitle className="text-lg font-semibold text-gray-900">Client Status</CardTitle>
+        <CardTitle className="text-lg font-semibold text-foreground">Client Status</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="h-80">
@@ -66,7 +66,7 @@ export function ClientsOverview({ clients }: ClientsOverviewProps) {
           {chartData.map((entry, index) => (
             <div key={entry.name} className="flex items-center">
               <div className="w-3 h-3 rounded-full mr-2" style={{ backgroundColor: COLORS[index % COLORS.length] }} />
-              <span className="text-sm text-gray-600">
+              <span className="text-sm text-muted-foreground">
                 {entry.name}: {entry.value}
               </span>
             </div>
