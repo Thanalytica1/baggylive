@@ -77,21 +77,21 @@ export function ThemeToggle() {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="min-w-[160px]">
         <DropdownMenuItem
-          onClick={() => handleThemeChange("light")}
+          onSelect={() => handleThemeChange("light")}
           className={theme === "light" ? "bg-accent text-accent-foreground" : ""}
         >
           <Sun className="mr-2 h-4 w-4" />
           Light
         </DropdownMenuItem>
         <DropdownMenuItem
-          onClick={() => handleThemeChange("dark")}
+          onSelect={() => handleThemeChange("dark")}
           className={theme === "dark" ? "bg-accent text-accent-foreground" : ""}
         >
           <Moon className="mr-2 h-4 w-4" />
           Dark
         </DropdownMenuItem>
         <DropdownMenuItem
-          onClick={() => handleThemeChange("system")}
+          onSelect={() => handleThemeChange("system")}
           className={theme === "system" ? "bg-accent text-accent-foreground" : ""}
         >
           <Monitor className="mr-2 h-4 w-4" />
