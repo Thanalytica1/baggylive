@@ -1,8 +1,7 @@
 import { redirect } from "next/navigation"
 import { createClient } from "@/lib/supabase/server"
 import { DashboardHeader } from "@/components/dashboard/dashboard-header"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { SettingsNav } from "@/components/settings/settings-nav"
 
 export default async function SettingsLayout({
   children,
@@ -31,24 +30,7 @@ export default async function SettingsLayout({
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex gap-8">
-          {/* Settings Sidebar */}
-          <nav className="w-64 space-y-1">
-            <h2 className="text-lg font-semibold mb-4">Settings</h2>
-            <Link
-              href="/settings/profile"
-              className="block px-4 py-2 text-sm rounded-md hover:bg-accent hover:text-accent-foreground transition-colors"
-            >
-              Profile Settings
-            </Link>
-            <Link
-              href="/settings/business"
-              className="block px-4 py-2 text-sm rounded-md hover:bg-accent hover:text-accent-foreground transition-colors"
-            >
-              Business Settings
-            </Link>
-          </nav>
-
-          {/* Settings Content */}
+          <SettingsNav />
           <main className="flex-1">
             {children}
           </main>
