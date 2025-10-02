@@ -17,7 +17,14 @@ export function ThemeToggle() {
 
   React.useEffect(() => {
     setMounted(true)
+    console.log('🎨 ThemeToggle mounted:', { theme, resolvedTheme, mounted: true })
   }, [])
+
+  React.useEffect(() => {
+    if (mounted) {
+      console.log('🎨 Theme state changed:', { theme, resolvedTheme })
+    }
+  }, [theme, resolvedTheme, mounted])
 
   const getIcon = () => {
     if (!mounted) {
@@ -35,7 +42,9 @@ export function ThemeToggle() {
   }
 
   const handleThemeChange = (newTheme: string) => {
+    console.log('🎨 Theme change requested:', { from: theme, to: newTheme })
     setTheme(newTheme)
+    console.log('🎨 setTheme called with:', newTheme)
   }
 
   if (!mounted) {
