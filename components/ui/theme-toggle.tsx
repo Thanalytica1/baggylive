@@ -17,14 +17,7 @@ export function ThemeToggle() {
 
   React.useEffect(() => {
     setMounted(true)
-    console.log('🎨 ThemeToggle mounted:', { theme, resolvedTheme, mounted: true })
   }, [])
-
-  React.useEffect(() => {
-    if (mounted) {
-      console.log('🎨 Theme state changed:', { theme, resolvedTheme })
-    }
-  }, [theme, resolvedTheme, mounted])
 
   const getIcon = () => {
     if (!mounted) {
@@ -39,12 +32,6 @@ export function ThemeToggle() {
       default:
         return <Monitor className="h-4 w-4" />
     }
-  }
-
-  const handleThemeChange = (newTheme: string) => {
-    console.log('🎨 Theme change requested:', { from: theme, to: newTheme })
-    setTheme(newTheme)
-    console.log('🎨 setTheme called with:', newTheme)
   }
 
   if (!mounted) {
@@ -76,68 +63,22 @@ export function ThemeToggle() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="min-w-[160px]">
-        {console.log('🎨 Dropdown content rendered')}
         <DropdownMenuItem
-          onSelect={(e) => {
-            console.log('🎨 onSelect fired for light', e)
-            handleThemeChange("light")
-          }}
-          onClick={(e) => {
-            console.log('🎨 onClick fired for light', e)
-            e.preventDefault()
-            e.stopPropagation()
-            handleThemeChange("light")
-          }}
-          onPointerDown={(e) => {
-            console.log('🎨 onPointerDown fired for light', e)
-          }}
-          onMouseDown={(e) => {
-            console.log('🎨 onMouseDown fired for light', e)
-          }}
+          onSelect={() => setTheme("light")}
           className={theme === "light" ? "bg-accent text-accent-foreground" : ""}
         >
           <Sun className="mr-2 h-4 w-4" />
           Light
         </DropdownMenuItem>
         <DropdownMenuItem
-          onSelect={(e) => {
-            console.log('🎨 onSelect fired for dark', e)
-            handleThemeChange("dark")
-          }}
-          onClick={(e) => {
-            console.log('🎨 onClick fired for dark', e)
-            e.preventDefault()
-            e.stopPropagation()
-            handleThemeChange("dark")
-          }}
-          onPointerDown={(e) => {
-            console.log('🎨 onPointerDown fired for dark', e)
-          }}
-          onMouseDown={(e) => {
-            console.log('🎨 onMouseDown fired for dark', e)
-          }}
+          onSelect={() => setTheme("dark")}
           className={theme === "dark" ? "bg-accent text-accent-foreground" : ""}
         >
           <Moon className="mr-2 h-4 w-4" />
           Dark
         </DropdownMenuItem>
         <DropdownMenuItem
-          onSelect={(e) => {
-            console.log('🎨 onSelect fired for system', e)
-            handleThemeChange("system")
-          }}
-          onClick={(e) => {
-            console.log('🎨 onClick fired for system', e)
-            e.preventDefault()
-            e.stopPropagation()
-            handleThemeChange("system")
-          }}
-          onPointerDown={(e) => {
-            console.log('🎨 onPointerDown fired for system', e)
-          }}
-          onMouseDown={(e) => {
-            console.log('🎨 onMouseDown fired for system', e)
-          }}
+          onSelect={() => setTheme("system")}
           className={theme === "system" ? "bg-accent text-accent-foreground" : ""}
         >
           <Monitor className="mr-2 h-4 w-4" />
